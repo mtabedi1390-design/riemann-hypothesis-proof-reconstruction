@@ -1,0 +1,68 @@
+%% Dependency graph for the Alpöge–Claude Lean proof.
+%% Solid arrows = source-inspected direct dependencies.
+%% Dotted arrows = editorial grouping or source-read, not an elaborated environment edge.
+%% Compile with Mermaid 10+.
+
+flowchart TD
+  RH["Mathlib.RiemannHypothesis"]
+  RZ["RiemannZetaZerosOnLine"]
+  DN["DirichletLNonvanishingRightOfHalf"]
+  DZ["DirichletLZerosOnLine"]
+  PD["PrimitiveDirichletLZerosOnLine"]
+
+  RH --> RH_THM["riemannHypothesis<br/>Main.lean:4"]
+  RZ --> RZ_THM["riemannZeta_eq_zero_re<br/>Main.lean:6"]
+  DN --> DN_THM["LFunction_ne_zero_of_half_lt_re<br/>Main.lean:8"]
+  DZ --> DZ_THM["LFunction_eq_zero_re<br/>Main.lean:10"]
+  PD --> PD_THM["LFunction_eq_zero_re_of_isPrimitive<br/>Main.lean:12"]
+
+  RH_THM --> RHOALL["rhOfAll"]
+  RZ_THM --> RHOALL
+  DN_THM --> ALLCHI["allChi"]
+  DZ_THM --> CLAIMALL["claimAll"]
+  PD_THM --> CRITALL["critAll"]
+
+  RHOALL --> RHOFEVERY["Formalism.VW.rh_of_every"]
+  RHOFEVERY --> RHOFRIGHT["Formalism.VW.rh_of_right"]
+  RHOFEVERY --> ALLCHI
+
+  CLAIMALL --> STRIP["Claim.strip"]
+  CLAIMALL --> ZETA["Claim.zeta"]
+  CLAIMALL --> ALLCHI
+  CRITALL --> CRITLINE["Formalism.VW.critLine"]
+  CRITLINE --> ALLCHI
+
+  STRIP --> PRIMZERO["Claim.prim_zero"]
+  PRIMZERO --> FACTOR["Claim.factor_ne_zero"]
+  STRIP --> PRIMREFLECT["Claim.prim_reflect"]
+  PRIMREFLECT --> GAMMA["Claim.gamma_ne_zero"]
+  ZETA --> STRIP
+
+  ALLCHI --> EVERY["UpperTheory.FinalTheorems.everyCharacter"]
+  EVERY --> EVERYROW["everyCharacter_of_row"]
+  EVERYROW --> ROW0B["GalStar.Row0b<br/>source-read"]
+  EVERYROW --> REC["Zero.LLC.recTExists<br/>source-read"]
+  EVERYROW --> LIT["LiteratureTheorems.every_character_of_literature_of_vWin"]
+  LIT --> OLS["OpenLiteratureStatements"]
+  LIT --> VWIN["UpperTheory.Top.VWin"]
+  VWIN --> VWINAT["VWinAt ψ 401"]
+  VWIN -.-> VWINROW["One.vwin_of_row<br/>source-read"]
+  VWINROW -.-> ROW0B
+
+  LIT -.-> EIGEN["published_results_eigen"]
+  LIT -.-> FIRST["published_results_first"]
+  LIT -.-> THETA["ThetaIntegralsAgree"]
+  LIT -.-> MATCH["LocalMatching"]
+
+  EVERY -.-> PLUG["UpperTheory.Top.plugAll / plugWin"]
+  PLUG -.-> TOPG["UpperTheory.Top.TopG"]
+  PLUG -.-> SUPPLY["supplyChi"]
+  PLUG -.-> ZFA["zeroFreeAll_of_topG"]
+
+  classDef exported fill:#0f2b28,stroke:#0f2b28,color:#f7f2e7;
+  classDef tier1 fill:#e7efe9,stroke:#37635a,color:#17201d;
+  classDef deep fill:#f4e7df,stroke:#a8593b,color:#3a1f15;
+  classDef external fill:#efe9db,stroke:#8a7c5e,color:#2a2419;
+  class RH,RZ,DN,DZ,PD exported;
+  class RH_THM,RZ_THM,DN_THM,DZ_THM,PD_THM,RHOALL,ALLCHI,CRITALL,CLAIMALL,RHOFEVERY,RHOFRIGHT,STRIP,ZETA,PRIMZERO,FACTOR,PRIMREFLECT,GAMMA,CRITLINE tier1;
+  class EVERY,EVERYROW,ROW0B,REC,LIT,OLS,VWIN,VWINAT,VWINROW,EIGEN,FIRST,THETA,MATCH,PLUG,TOPG,SUPPLY,ZFA deep;
